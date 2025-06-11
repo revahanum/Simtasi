@@ -1,9 +1,17 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
+const auth = require("../middleware/auth");
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get("/homemahasiswa", auth.isLoggedIn, auth.isMahasiswa, (req, res) => {
+  res.render("homemahasiswa", { user: req.session.user });
+});
+
+router.get("/homedosen", auth.isLoggedIn, auth.isDosen, (req, res) => {
+  res.render("homedosen", { user: req.session.user });
+});
+
+router.get("/homeadmin", auth.isLoggedIn, auth.isAdmin, (req, res) => {
+  res.render("homeadmin", { user: req.session.user });
 });
 
 module.exports = router;
